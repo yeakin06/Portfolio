@@ -527,7 +527,7 @@ p.addEventListener('pointerleave',()=>{m.style.transform=''})})();
 (function(){const f=document.getElementById('ct'),b=document.getElementById('sendb'),l=document.getElementById('sbl'),t=document.getElementById('toast');if(!f)return;
 let tm;function say(m,s,e){t.className='toast show'+(e?' err':'');t.innerHTML=m+'<small>'+s+'</small>';clearTimeout(tm);tm=setTimeout(()=>t.classList.remove('show'),4500)}
 f.addEventListener('submit',async ev=>{ev.preventDefault();const d=Object.fromEntries(new FormData(f));b.disabled=true;l.textContent='SENDING...';
-try{const r=await fetch('https://api.emailjs.com/api/v1.0/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_id:'service_nstqt4b',template_id:'template_e5oatnn',user_id:'dOfVYk4r5gCp54mDi',template_params:d})});
+try{const r=await fetch('https://api.emailjs.com/api/v1.0/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_id:'service_nstqt4b',template_id:'template_e5oatnn',user_id:'dOfVYk4r5gCp54mDi',template_params:{...d,name:d.user_name,from_name:d.user_name,email:d.user_email,from_email:d.user_email,reply_to:d.user_email,phone:d.user_phone,subject:d.subjects,title:d.subjects}})});
 if(!r.ok)throw new Error(r.status);f.reset();say('Signal Received','I’ll get back to you shortly')}
 catch(_){say('Couldn’t send directly','Opening your email app instead…',true);
 location.href='mailto:yeakinhossain1234@gmail.com?subject='+encodeURIComponent(d.subjects)+'&body='+encodeURIComponent(d.message+'\n\n— '+d.user_name+' ('+d.user_email+', '+d.user_phone+')')}
