@@ -960,7 +960,7 @@ nav .lg .rv path:nth-child(51){animation:sd51 9s linear infinite}
     T(()=>finish(false),6100);
   }
   const fr=(document.fonts&&document.fonts.ready)?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,900))]):Promise.resolve();
-  fr.then(run);
+  fr.then(function(){try{run()}catch(e){finish(true)}}).catch(function(){finish(true)});
 })();
 
 /* ===== scroll reveal ===== */
@@ -1104,7 +1104,7 @@ document.querySelectorAll('.r').forEach((el,i)=>{el.style.transitionDelay=(i%4)*
   function draw(){
     x.clearRect(0,0,c.W,c.H);
     for(const b of B){const D=INK[0]==='2';x.fillStyle=b.a?(D?'#eeebe3':'#14162a'):(D?'#101010':'#c3c7d8');x.fillRect(b.x,b.y,s*.86,s*.86)}
-    x.fillStyle=INK[0]==='2'?'#ece8dc':'#14162a';x.beginPath();x.roundRect(padX-padW/2,c.H-s*2,padW,s*.85,s*.42);x.fill();
+    x.fillStyle=INK[0]==='2'?'#ece8dc':'#14162a';x.beginPath();(x.roundRect?x.roundRect(padX-padW/2,c.H-s*2,padW,s*.85,s*.42):x.rect(padX-padW/2,c.H-s*2,padW,s*.85));x.fill();
     x.fillStyle=INK[0]==='2'?'#fff':'#14162a';x.beginPath();x.arc(ball.x,ball.y,s*.48,0,7);x.fill();
   }
   function loop(t){
@@ -1663,6 +1663,16 @@ b.addEventListener('pointerup',function(){if(b.classList.contains('on')&&!rm.mat
 b.addEventListener('focus',function(){if(b.matches(':focus-visible'))b.classList.add('on')});
 b.addEventListener('blur',function(){b.classList.remove('on')});
 })();
+</script>
+<script>
+/* failsafe: if the intro is still covering the page after 11s (any browser error), remove it */
+setTimeout(function(){try{
+  var i=document.getElementById('intro');
+  if(i){i.style.transition='opacity .4s';i.style.opacity='0';i.style.pointerEvents='none';setTimeout(function(){i.remove()},450)}
+  document.body.classList.remove('lock');
+  var k=document.querySelector('.kick');if(k)k.style.opacity=1;
+  var h=document.querySelector('.hero-b');if(h)h.classList.add('on');
+}catch(e){}},11000);
 </script>
 </body>
 </html>
